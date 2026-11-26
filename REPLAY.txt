@@ -91,3 +91,31 @@ kept 17 seconds 27.615325212478638 cache CacheInfo(hits=1776, misses=114, maxsiz
 [15, 23, 27, 46, 53, 57, 60, 35] 71 53
 [15, 30, 39, 43, 53, 57, 60, 19] 78 55
 All 23-edge systems excluded
+
+Degree ten at 24 edges, Python 3.12
+$ python edge24/residual.py
+Fourteen-edge residual maximum scores by degree-five count: [85, 86, 88, 89, 91, 92, 93]
+26 systems reached the pair score of 91. All violate the collision bound.
+
+24-edge degree profile filters, Node 22.17.0
+$ node edge24/frontier.js
+transport 118 18014778 296215
+profiles after mate and codegree constraints 265367
+
+Rotation symmetry, GCC 13.1.0, C++20, -O3 -Wall -Wextra -Wpedantic -Werror
+$ ./cyclic
+orbits=16660
+nodes=167977 roots=17/17 largest_prefix=19 union_covers=144623
+All intersecting rotation-invariant families on up to ten labels per side have a five-cover.
+The largest prefix is a search statistic, not a bound on intersecting family size.
+
+Affine extensions, Node 22.17.0
+$ node edge24/affine-core.js 12
+Eligible cores=5169500, affine orbits=482
+Degree-one exclusions=17, old-cover exclusions=124, branch exclusions=341
+Branch nodes=18645, unresolved=0
+An independent GPT-6.2 Sol High reviewer replayed the affine enumeration and checked the pruning conditions. The reviewer and coordinator independently obtained the nonlinear-star residual argument from the published embedding theorem and the 35-vertex lower bound.
+
+Bounded SAT scout at 24 edges, Python 3.10 and python-sat 1.9.dev25
+$ python sat_search.py edge24/seed-profiles.json INDEX --critical-24 --strengthened --conflicts 50000 --rounds 8
+Every index 0 through 9 reached the conflict limit, with zero blocked five-covers. These runs yielded neither a witness nor a certified exclusion.

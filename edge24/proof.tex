@@ -1,0 +1,215 @@
+\section{Restrictions at 24 edges}
+
+\begin{proposition}
+If a rank-six counterexample has 24 edges, then every vertex has
+degree at most nine.
+\end{proposition}
+
+\begin{proof}
+The one-star bound gives maximum degree at most ten. Suppose
+that $v$ has degree ten and delete the ten edges through it, giving
+a residual hypergraph $J$ with 14 edges and cover number at least five.
+Its largest degree is at most five by the two-star bound. The sums
+of the three and four largest degrees in a side are at most 11 and
+13 by the four- and five-star bounds. On the side of $v$, at least
+five nonisolated vertices remain and their degrees are unchanged.
+All other sides retain at least six vertices by noncontainment.
+
+There are at most ten degree-one vertices of $J$. To see this, the
+other vertices of each deleted edge form a five-cover of $J$. At
+most one vertex in that cover can have residual degree one. If
+there were two, a single vertex could cover their at most two edges
+and reduce the cover to four. Every residual degree-one vertex
+occurs on at least one deleted edge because its degree in the
+original hypergraph was at least two. Counting these incidences gives
+the claimed bound.
+
+Let $k$ be the number of degree-five vertices, $q\in\{0,1\}$
+indicate whether one is on the side of $v$, and $k'=k-q$.
+No side contains two degree-five vertices, because deleting their
+stars in $J$ leaves at least five edges. Let $X_4$ count the
+degree-four vertices, $W$ the degree-one vertices, and $K$ the sum
+of the six side sizes in $J$. For $1\le d\le5$,
+\[
+ \binom d2-[d=1]=2d-3+[d=4]+3[d=5].
+\]
+The score $S$ that counts pair intersections with multiplicity
+therefore satisfies
+\[
+ S=168-3K+W+X_4+3k\ \leq\ 73+X_4+3k,
+\]
+since $K\ge35$ and $W\le10$.
+The side of $v$ has at most two degree-four vertices if $q=0$
+and none if $q=1$. Indeed three such vertices violate the bound on
+the three largest degrees, and a degree five and a degree four
+would leave fewer than six degrees for the other three vertices
+on that side. Each other side has at least six vertices. A side
+there with a degree-five vertex has at least one singleton by
+degree count, and a degree-four vertex on that side requires at
+least two more singletons. A side there without a degree-five
+vertex can have a first degree-four vertex freely, while a second
+requires at least two singletons. Thus
+\[
+ X_4\le (5-k')+2(1-q)+\left\lfloor\frac{10-k'}2\right\rfloor.
+\]
+The resulting upper bounds on $S$ for $k=0,\ldots,6$ are
+$85,86,88,89,91,92,93$. Intersectingness requires $S\ge91$.
+
+Every two degree-five stars in $J$ intersect, since their union
+has size at most nine. No three can have all their pairwise
+codegrees equal to one. Their union would contain at least twelve
+edges, giving a four-cover after covering the remaining two edges
+with one vertex. Put an edge between two degree-five vertices if
+their codegree is at least two. Its complement is triangle-free
+and has at most $\lfloor k^2/4\rfloor$ edges by Mantel's bound.
+Hence these stars alone contribute at least
+$\binom k2-\lfloor k^2/4\rfloor$ to the two-side collision count $T$.
+Each pair of residual edges still meets in at most four vertices,
+so $T\le2(S-91)$. For $k=4,5,6$ the respective lower bounds on
+$T$ are $2,4,6$ and the upper bounds are $0,2,4$.
+This is a contradiction in every case.
+\end{proof}
+
+Two further constraints follow from the private pairs at degree-two
+vertices. In an $m$-edge counterexample with $t$ degree-two vertices,
+the resulting $t$ pairs are disjoint and leave $B=m-2t$ unpaired
+edges. If part $i$ contains $t_i$ of those vertices, any other vertex
+in that part is in at most one edge of each pair and in none of the
+$t_i$ pairs from its own part. Thus its degree is at most $t-t_i+B$.
+
+For distinct vertices $v,w$ of degrees at least three, suppose that
+$d(w)-c(v,w)=1$. Every edge containing both $v,w$ is unpaired:
+an original degree-two vertex on such an edge would have residual
+degree one after deleting the star of $v$, since its private mate
+avoids $v$. Together with $w$ this would give two residual
+singletons in a five-cover. Therefore $c(v,w)\le d(w)-2$ whenever
+$d(w)-1>B$, and the corresponding inequality holds when interchanging
+$v,w$. At 24 edges, applying the mate and codegree constraints to
+the degree and pair-transport enumeration leaves 265,367 degree
+systems prior to the joint residual-star tests.
+
+\begin{proposition}
+Deleting any active vertex star from a rank-six counterexample leaves
+two edges that meet in at least two vertices.
+\end{proposition}
+
+\begin{proof}
+The residual has cover number at least five. The other five vertices
+of any deleted edge cover it, so its cover number is exactly five.
+Noncontainment of stars implies that every active vertex other than
+the deleted vertex remains active. The residual therefore has at least
+35 active vertices. If it were linear, Theorem 4.1(1) of \cite{fhmw}
+would embed it into the truncated projective plane of order five,
+which has only 30 vertices.
+\end{proof}
+
+In particular, form a graph on the edges of $H$ by joining pairs that
+meet in at least two vertices. No vertex star of $H$ is a vertex cover
+of this graph. Its vertex cover number is at least three: any one or
+two edges of $H$ lie in a common star. Each one-star residual must
+also have at least one excess intersection incidence over its number
+of pairs.
+
+\section{Rotation symmetry}
+
+\begin{proposition}
+Suppose an automorphism of order six cycles the six parts of $H$.
+If $H$ has at most 43 edges or at most ten active vertices per part,
+then $\tau(H)\le5$.
+\end{proposition}
+
+\begin{proof}
+Transport the labels of one part to the others by powers of the
+automorphism. Its sixth power is the identity, so the automorphism
+becomes the cyclic rotation of row coordinates. When the common
+part size is at most ten, pad the alphabet to ten and enumerate the
+1,000,000 rows. In a counterexample distinct rows must agree in at
+least one and at most four coordinates. The latter bound follows
+from star noncontainment, or from the five shared vertices covering
+every row. After this test within each orbit, 16,660 orbits remain.
+Two distinct orbits can coexist only if all their cross pairs obey the
+same test. To check compatibility it suffices to fix a representative
+in the first orbit and test every row in the second.
+
+A potential counterexample contains an orbit. A common relabeling of
+all six parts commutes with rotation. The equality pattern of each
+rotation of a representative therefore yields a canonical candidate
+root by normalization in order of first occurrence. The program
+starts once at each of the resulting 17 roots with all compatible
+orbits available. To find a cover of size at most five, it branches
+on the six vertices of a currently uncovered row with one fewer
+available choice at each step. If the chosen orbits have a five-cover,
+some remaining orbit in a counterexample must contain a row missed
+by that cover. Order these orbits and branch on the first one that the
+counterexample uses. Each branch retains compatible orbits that meet
+the cover and compatible later orbits that break it. A five-cover of
+the union of all available orbits excludes the entire branch.
+The integer search in \texttt{edge24/cyclic.cpp} exhausts all roots.
+
+Now suppose the common active part size $q$ is at least eleven and
+$m\le43$. The main theorem gives $m\ge24$. Each part has the same
+number of degree-two vertices, at most $b=\lfloor m/12\rfloor$ because
+the degree-two pairs are disjoint. Every other active vertex has
+degree at least three. This requires $m\ge33-b$, which excludes
+$m<31$ in the stated range. For a fixed number of twos, convexity
+maximizes the pair count by assigning all excess degree to one
+vertex. The resulting upper bound increases on reducing the side
+size to eleven and increasing the number of twos to $b$. The total
+over all six sides is at most
+\[
+ 6\left(\binom{m-30+b}{2}+30-2b\right).
+\]
+Subtract this from $\binom m2$. For each constant value of $b$ the
+difference is a concave quadratic in $m$. At the endpoints 31, 35,
+36, and 43 it equals 291, 313, 270, and 39, respectively. So the
+pair score falls short of the number of pairs throughout the range.
+\end{proof}
+
+\section{Extensions of an affine-plane core}
+
+Give each point of the affine plane over the field of five elements
+the row of its six incident lines, one per direction. These labels are old and any
+other labels are called new.
+
+\begin{proposition}
+An intersecting extension containing at least twelve unchanged
+affine rows, in their original parts, has a five-cover.
+\end{proposition}
+
+\begin{proof}
+It suffices to keep any twelve of the specified rows as the core.
+A counterexample needs at least one new label in every direction.
+Each row containing new labels must meet the core using its old
+lines. Two nonparallel lines cover only nine points, so at least
+three labels in the row are old. Enumerate all choices of one to three
+omitted directions and all old line choices in the other directions.
+For each union, mark every twelve-point subset of it as admitting new
+labels in the omitted directions. There are 5,169,500 subsets that
+admit new labels in all six directions. The group of affine linear
+maps and translations partitions these into 482 orbits.
+
+For each representative, use one symbolic new label per direction.
+Actual equalities between new labels imply symbolic equalities. A
+cover using only old labels therefore applies to every realization
+of the covered symbolic types. A direction with fewer than two
+singleton-new types and no multi-new type is impossible. A new
+label would lie in at most one edge, since all five other labels are
+fixed by the sole allowed type. This excludes 17 orbits. If a
+direction has exactly two singleton-new types and no multi-new type,
+both types must occur. Of the remaining orbits, 124 have an old-label
+five-cover after filtering for compatibility with all such mandatory
+types.
+
+For the remaining 341 orbits, start with the core and the mandatory
+types. Branch on the first available type breaking the current
+old-label five-cover, retaining only compatible future types. The
+search rejects a branch if all remaining types have an old-label
+five-cover, if a needed direction can no longer support a new label
+of degree at least two, or if a chosen old label can no longer occur
+twice. For the last test an old-only type contributes one possible
+occurrence, and a type with a new label contributes two, which
+suffices for a threshold of two. The program never limits how many
+actual rows can realize a type with new labels. Every actual extension
+would therefore survive some branch. The exact search in
+\texttt{edge24/affine-core.js} exhausts all branches in 18,645 nodes.
+\end{proof}

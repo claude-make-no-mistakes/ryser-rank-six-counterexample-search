@@ -12,10 +12,12 @@ from pysat.solvers import Solver
 from witness import cover, validate_rows
 
 
-def run(profile, conflicts, rounds, strengthened=False):
+def run(profile, conflicts, rounds, strengthened=False, critical_24=False):
     edge_count = sum(profile[0])
     if len(profile) != 6 or any(sum(side) != edge_count for side in profile):
         raise ValueError("The six profiles must have equal sums")
+    if critical_24 and edge_count != 24:
+        raise ValueError("The edge-critical constraints require exactly 24 edges")
     pool = IDPool()
 
     def label(side, row, value):
@@ -40,9 +42,12 @@ def run(profile, conflicts, rounds, strengthened=False):
         # Row permutations put the first side into fixed consecutive groups.
         # Equal-degree labels in other sides can then use first occurrence.
         start = 0
+        ordered_row_pairs = set()
         for value, degree in enumerate(profile[0]):
             for row in range(start, start + degree):
                 solver.add_clause([label(0, row, value)])
+                if row > start and critical_24:
+                    ordered_row_pairs.add((row - 1, row))
             start += degree
 
         for row in range(edge_count):
@@ -62,6 +67,12 @@ def run(profile, conflicts, rounds, strengthened=False):
                     first, second = label(side, i, value), label(side, j, value)
                     solver.add_clause([-first, -second, same])
                     solver.add_clause([-same, -first, second])
+                if side and (i, j) in ordered_row_pairs:
+                    prefix_differs = [-equal for equal in both[1:side]]
+                    for high in range(1, len(degrees)):
+                        for low in range(high):
+                            solver.add_clause([*prefix_differs, -label(side, i, high),
+                                               -label(side, j, low)])
                 token = pool.id(("private", i, j, side))
                 private[i][side].append(token)
                 private[j][side].append(token)
@@ -70,6 +81,28 @@ def run(profile, conflicts, rounds, strengthened=False):
         for side_list in private:
             for choices in side_list:
                 solver.add_clause(choices)
+
+        if critical_24:
+            vertices = [(side, v) for side, degrees in enumerate(profile)
+                        for v in range(len(degrees))]
+            # By the 24-edge lower bound, deleting one edge leaves
+            # a five-cover. In any counterexample that cover avoids the edge.
+            for deleted in range(edge_count):
+                selected = {(side, v): pool.id(("cover", deleted, side, v))
+                            for side, v in vertices}
+                cardinality(list(selected.values()), 5)
+                for (side, v), chosen in selected.items():
+                    solver.add_clause([-chosen, -label(side, deleted, v)])
+                for row in range(edge_count):
+                    if row == deleted:
+                        continue
+                    hits = []
+                    for side, v in vertices:
+                        hit = pool.id(("cover_hit", deleted, row, side, v))
+                        hits.append(hit)
+                        solver.add_clause([-hit, selected[side, v]])
+                        solver.add_clause([-hit, label(side, row, v)])
+                    solver.add_clause(hits)
 
         if strengthened:
             for row in range(edge_count):
@@ -126,11 +159,13 @@ def main():
     parser.add_argument("--conflicts", type=int, default=20_000)
     parser.add_argument("--rounds", type=int, default=20)
     parser.add_argument("--strengthened", action="store_true")
+    parser.add_argument("--critical-24", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     systems = json.loads(args.profiles.read_text(encoding="utf-8"))
     profile = systems[args.index]
-    outcome, excluded_covers, rows = run(profile, args.conflicts, args.rounds, args.strengthened)
+    outcome, excluded_covers, rows = run(profile, args.conflicts, args.rounds,
+                                         args.strengthened, args.critical_24)
     print(f"profile={args.index} outcome={outcome} excluded_covers={excluded_covers}")
     if rows is not None:
         payload = json.dumps(rows, indent=2) + "\n"

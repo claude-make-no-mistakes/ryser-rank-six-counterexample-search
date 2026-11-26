@@ -4,16 +4,16 @@ const path = require("node:path");
 const { exam, costs } = (() => {
 
 function C(n) { return n*(n-1)/2; }
-function profiles(n) {
+function profiles(n, maximumDegree) {
   const ps=[];
   function extend(left, cap, p) {
     if(left===0) { if(p.length>=6&&p[0]+p[1]<=n-9) ps.push(p); return; }
     for(let d=Math.min(cap,left);d>=2;d--) extend(left-d,d,p.concat(d));
   }
-  extend(n,n-14,[]);
+  extend(n,maximumDegree,[]);
   return ps.map(p=>({p,s:p.reduce((a,d)=>a+C(d),0),t:p.filter(d=>d===2).length})).sort((a,b)=>b.s-a.s);
 }
-function costs(n,ps,d3) {
+function costs(n,ps,d3,unpaired=null) {
   function min(p,q) {
     const a=p.p.slice(), b=q.p.slice(), m=a.length, k=b.length;
     const src=m+k, sink=src+1, size=sink+1, g=Array.from({length:size},()=>[]);
@@ -24,7 +24,12 @@ function costs(n,ps,d3) {
     let ans=0;
     for(let i=0;i<m;i++) for(let j=0;j<k;j++) {
       const lo=Math.max(0,p.p[i]+q.p[j]-(n-9));
-      const hi=p.p[i]===2||q.p[j]===2 ? (p.p[i]===q.p[j]?0:1) : d3&&(p.p[i]===3||q.p[j]===3)?1:Math.min(p.p[i],q.p[j])-1;
+      const di=p.p[i], dj=q.p[j];
+      let hi=di===2||dj===2 ? (di===dj?0:1) : d3&&(di===3||dj===3)?1:Math.min(di,dj)-1;
+      if (unpaired !== null && Math.min(di,dj)>=3) {
+        if (di-1>unpaired) hi=Math.min(hi,di-2);
+        if (dj-1>unpaired) hi=Math.min(hi,dj-2);
+      }
       if(lo>hi)return Infinity;
       a[i]-=lo;b[j]-=lo;
       ans+=C(lo);
@@ -54,8 +59,8 @@ function costs(n,ps,d3) {
   }
   return ps.map((p,i)=>ps.map((q,j)=>j<i?null:min(p,q)));
 }
-function exam(n,d3) {
-  const ps=profiles(n), allcost=costs(n,ps,d3), req=C(n), survivors=[];
+function exam(n,d3,maximumDegree=n-14) {
+  const ps=profiles(n,maximumDegree), allcost=costs(n,ps,d3), req=C(n), survivors=[];
   let total=0, min=Infinity;
   function go(start, chosen, totalS, totalT, totalCost) {
     if(chosen.length===6) {
@@ -148,7 +153,7 @@ return scan;
 const scanWithCollisionGap = (() => {
 
 function scan(n, systems, cost){
-const maxGap=Math.max(...systems.map(([,s,,base])=>2*(s-n*(n-1)/2)-base));
+const maxGap=systems.reduce((bound,[,s,,base])=>Math.max(bound,2*(s-n*(n-1)/2)-base),-Infinity);
 const C=d=>d*(d-1)/2, cache=new Map();
 function options(p,q,d,istr){
  const key=[p,q,d,istr].join("|"); if(cache.has(key)) return cache.get(key);
@@ -239,6 +244,9 @@ return {stats,kept,cache:cache.size};
 
 return scan;
 })();
+module.exports = {exam, costs, scan, scanWithCollisionGap};
+
+function main() {
 const n = 23;
 const relaxed = exam(n, false);
 const refined = new Set(exam(n, true).survivors.map(x => JSON.stringify(x[0])));
@@ -257,3 +265,6 @@ console.log("h23 profile pipeline", counts.join(" "));
 if (counts.join(",") !== "87,1756829,9614,5527,537,126") throw new Error("unexpected profile counts");
 const target = process.argv[2] || path.join(__dirname, "systems-126.json");
 fs.writeFileSync(target, JSON.stringify(gap.kept) + "\n");
+}
+
+if (require.main === module) main();

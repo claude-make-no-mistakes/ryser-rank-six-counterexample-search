@@ -7,11 +7,12 @@
 \setlength{\textwidth}{6in}
 \setlength{\oddsidemargin}{0.25in}
 \setlength{\evensidemargin}{0.25in}
-\setlength{\textheight}{8.65in}
+\setlength{\textheight}{8.85in}
 \setlength{\topmargin}{-0.45in}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
 \title{A 24-edge lower bound for rank-six intersecting Ryser counterexamples}
 \author{\vspace{-1.5\baselineskip}}
 \date{November 26, 2026}
@@ -26,7 +27,10 @@ Deleting two vertex stars leaves at least nine edges, and deleting one
 leaves at least 14. Integer degree-profile enumeration and a side congruence
 exclude 22 edges. Transportation and overlap constraints reduce the
 23-edge case to three systems of overlap masks. Exact integer inequalities
-exclude all three.
+exclude all three. At 24 edges the maximum degree is at most nine.
+We also exclude counterexamples with order-six rotation symmetry
+through 43 edges and extensions of at least twelve unchanged rows
+of the affine plane of order five.
 \end{abstract}
 
 \begin{theorem}
@@ -183,6 +187,7 @@ For $R=18$ the indicated side sum lies between 13 and 14.
 For $R=15$ it equals eight. This excludes 22 edges.
 
 \input{edge23/proof.tex}
+\input{edge24/proof.tex}
 
 \section{An affine-plane construction that cannot give a witness}
 
@@ -231,6 +236,9 @@ intersection checks use integer arithmetic. For 23 edges, the replay
 regenerates the profile systems, checks each solver-proposed pair bound
 as a rational inequality, checks the saved row certificates, and
 enumerates and verifies the three final mask certificates.
+For 24 edges we independently enumerate the residual degree profiles
+in the degree-ten obstruction. The rotation and affine extension
+checks use integer bit masks and exhaustive branching.
 The earlier 22-edge lower bound appears in \cite{hrk}.
 
 \begin{thebibliography}{9}
@@ -242,6 +250,10 @@ arXiv:1409.4833v2, 2015.
 A. Abu-Khazneh and A. Pokrovskiy.
 \emph{Intersecting extremal constructions in Ryser's conjecture
 for $r$-partite hypergraphs}. arXiv:1409.4938, 2014.
+\bibitem{fhmw}
+N. Franceti\'c, S. Herke, B. D. McKay, and I. M. Wanless.
+\emph{On Ryser's conjecture for linear intersecting multipartite
+hypergraphs}. arXiv:1508.00951, 2015.
 \bibitem{hrk}
 HRK44. \emph{The 22-edge lower bound for rank-six counterexamples
 to Ryser's conjecture}. GitHub repository \texttt{HRK44/ryser-conjecture-22}, 2026.
