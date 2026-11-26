@@ -61,3 +61,33 @@ profile=120 outcome=conflict limit excluded_covers=0
 Witness checker control
 The 13-edge hypergraph in Equation (7) of arXiv:1409.4833v2 has a five-cover and no four-cover by bitset recursion and separate exhaustive four-subset enumeration.
 Duplicate rows, a disjoint pair, and noninteger labels all triggered validation errors.
+
+23-edge proof, Node 22.17.0, Python 3.12.14, NumPy 2.5.3, SciPy 1.18.1
+$ python edge23/replay.py
+Column order in row-dual lines: system index, admissible row count, certified lower bound, permitted upper bound.
+Each final line gives the overlap masks, admissible row count, and exact contradiction value.
+h23 profile pipeline 87 1756829 9614 5527 537 126
+hard transport pass 72
+kept 17 seconds 27.615325212478638 cache CacheInfo(hits=1776, misses=114, maxsize=None, currsize=114)
+[0, 9, 13, 35, 53, 74, 76, 78, 80, 85, 96, 106, 110, 113, 115, 117, 121]
+0 557 15 8
+1 375 16 8
+2 589 10 6
+3 379 12 8
+4 596 2 4
+5 165 14 8
+6 150 13 10
+7 237 13 10
+8 150 16 6
+9 93 20 2
+10 393 11/2 4
+11 387 5 2
+12 359 8 4
+13 559 8 4
+14 360 4 2
+15 388 6 2
+16 553 4 2
+[15, 23, 27, 39, 43, 60, 60, 49] 78 55
+[15, 23, 27, 46, 53, 57, 60, 35] 71 53
+[15, 30, 39, 43, 53, 57, 60, 19] 78 55
+All 23-edge systems excluded

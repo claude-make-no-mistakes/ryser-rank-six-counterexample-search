@@ -12,7 +12,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
-\title{A 23-edge lower bound for rank-six intersecting Ryser counterexamples}
+\title{A 24-edge lower bound for rank-six intersecting Ryser counterexamples}
 \author{\vspace{-1.5\baselineskip}}
 \date{November 26, 2026}
 
@@ -21,16 +21,17 @@
 
 \begin{abstract}
 Every six-partite, six-uniform intersecting hypergraph with cover number six
-has at least 23 edges. This raises the reported 22-edge lower bound by one.
-Deleting two vertex stars leaves at least nine edges, and deleting one leaves
-at least 14. Integer enumeration reduces the 22-edge case to five degree
-systems. A restriction on degree-three vertices and a congruence on each
-side exclude all five.
+has at least 24 edges. This improves the reported lower bound of 22.
+Deleting two vertex stars leaves at least nine edges, and deleting one
+leaves at least 14. Integer degree-profile enumeration and a side congruence
+exclude 22 edges. Transportation and overlap constraints reduce the
+23-edge case to three systems of overlap masks. Exact integer inequalities
+exclude all three.
 \end{abstract}
 
 \begin{theorem}
 If $H$ is a finite, simple, intersecting six-partite, six-uniform hypergraph
-with covering number $\tau(H)=6$, then $|E(H)|\geq23$.
+with covering number $\tau(H)=6$, then $|E(H)|\geq24$.
 \end{theorem}
 
 \section{Deleting stars}
@@ -179,7 +180,9 @@ When all multiple intersections have size four, each side has
 $\sum_{j\ne i}T_{ij}$ divisible by three. Each size-four
 intersection using that side contributes three to this sum.
 For $R=18$ the indicated side sum lies between 13 and 14.
-For $R=15$ it equals eight. This proves the theorem.
+For $R=15$ it equals eight. This excludes 22 edges.
+
+\input{edge23/proof.tex}
 
 \section{An affine-plane construction that cannot give a witness}
 
@@ -193,7 +196,7 @@ is intersecting, its cover number is at most five.
 \end{corollary}
 
 \begin{proof}
-If it has cover number six, at most two points were deleted by the
+If it has cover number six, at most one point was deleted by the
 theorem. All five traces in each direction are nonempty.
 No block can merge three lines because its deletion would leave at
 most ten edges. Two merged blocks in one direction leave at most five
@@ -205,14 +208,11 @@ line would therefore split it into sizes two and three. The six cross
 pairs on that line would have to meet in other directions. Each other
 direction can repair at most one such pair through its lone merged
 block, since each of its two merged lines meets the split line once.
-There are only five other directions. Thus neither five-point traces
-nor three-point traces can split. A four-point trace can only split
-into two pairs.
+There are only five other directions. Thus five-point traces
+cannot split. A four-point trace can only split into two pairs.
 
 If no points were deleted, every direction has at most five blocks.
-If two points were deleted, the direction of their joining line has
-one three-point trace and four five-point traces, again giving at most
-five blocks. If one point was deleted, each direction has one
+If one point was deleted, each direction has one
 four-point trace and needs to split it without merging to obtain six
 blocks. With no merges in any direction, none of these splits can
 preserve intersection. These cases exhaust the possibilities.
@@ -227,8 +227,11 @@ recursively and uses convex marginal costs for row bounds, with a
 min-cost-flow cross-check on the surviving profile systems.
 Both give five systems before the degree-three cut, three before
 the congruence, and zero after it. The 13-edge residual and the
-intersection checks use integer arithmetic. The earlier 22-edge
-lower bound appears in \cite{hrk}.
+intersection checks use integer arithmetic. For 23 edges, the replay
+regenerates the profile systems, checks each solver-proposed pair bound
+as a rational inequality, checks the saved row certificates, and
+enumerates and verifies the three final mask certificates.
+The earlier 22-edge lower bound appears in \cite{hrk}.
 
 \begin{thebibliography}{9}
 \bibitem{abw}
