@@ -1,0 +1,63 @@
+Python 3.12.4 with standard-library proof replays
+
+$ python replay.py
+13-edge residual: 35 profiles, zero systems
+13 through 21 edges: zero systems
+22-edge residual system: R=20 slack=0 side=(14, 10, 14, 14, 14, 14) excluded
+22-edge residual system: R=18 slack=1 side=(9, 9, 13, 13, 13, 13) excluded
+22-edge residual system: R=15 slack=0 side=(8, 8, 12, 12, 12, 8) excluded
+22 edges excluded: 64 profiles, five systems, three after the degree-three cut
+
+$ python transport.py 22
+edges=22 systems entering transport=5
+((8, 5, 3, 2, 2, 2), (8, 4, 3, 3, 2, 2), (7, 6, 3, 2, 2, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2)) R=20 min_T=40 side_min=[14, 14, 10, 14, 14, 14] redundancy is not divisible by three
+((8, 4, 3, 3, 2, 2), (7, 6, 3, 2, 2, 2), (7, 6, 3, 2, 2, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2)) R=18 min_T=35 side_min=[13, 9, 9, 13, 13, 13] a side collision count cannot be divisible by three
+((7, 6, 3, 2, 2, 2), (7, 6, 3, 2, 2, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2), (8, 3, 3, 3, 3, 2), (7, 5, 3, 3, 2, 2)) R=15 min_T=30 side_min=[8, 8, 12, 12, 12, 8] a side collision count cannot be divisible by three
+transport=5 degree_three=3 unresolved=0
+
+$ python frontier.py 23 --output frontier-23.json
+edges=23 systems entering transport=14040
+transport=8591 degree_three=5210 unresolved=3559
+joint_star_systems=313 maximum_degrees=[8]
+Profile list SHA-256 CCC1064B7BAB234EAC27BB08D10CE138A21C4E936F76A04FC2A4ECC0169AAA54
+
+SAT scout, Python 3.10 and python-sat 1.9.dev25 with CaDiCaL 1.9.5
+$ python sat_search.py frontier-23.json 0 --conflicts 35000 --rounds 8
+profile=0 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 1 --conflicts 35000 --rounds 8
+profile=1 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 25 --conflicts 35000 --rounds 8
+profile=25 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 80 --conflicts 35000 --rounds 8
+profile=80 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 160 --conflicts 35000 --rounds 8
+profile=160 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 312 --conflicts 35000 --rounds 8
+profile=312 outcome=conflict limit excluded_covers=0
+
+Strengthened SAT scout at 100000 conflicts per profile and 8 rounds.
+These profiles were prioritized by a numerical scout. The list does not certify exclusions.
+Command form: python sat_search.py frontier-23.json INDEX --strengthened --conflicts 100000 --rounds 8
+profile=0 outcome=conflict limit excluded_covers=0
+profile=19 outcome=conflict limit excluded_covers=0
+profile=25 outcome=conflict limit excluded_covers=0
+profile=84 outcome=conflict limit excluded_covers=0
+profile=120 outcome=conflict limit excluded_covers=0
+profile=177 outcome=conflict limit excluded_covers=0
+profile=181 outcome=conflict limit excluded_covers=0
+profile=184 outcome=conflict limit excluded_covers=0
+profile=187 outcome=conflict limit excluded_covers=0
+profile=195 outcome=conflict limit excluded_covers=0
+profile=223 outcome=conflict limit excluded_covers=0
+profile=243 outcome=conflict limit excluded_covers=0
+profile=257 outcome=conflict limit excluded_covers=0
+profile=261 outcome=conflict limit excluded_covers=0
+profile=264 outcome=conflict limit excluded_covers=0
+profile=270 outcome=conflict limit excluded_covers=0
+profile=277 outcome=conflict limit excluded_covers=0
+$ python sat_search.py frontier-23.json 120 --strengthened --conflicts 750000 --rounds 8
+profile=120 outcome=conflict limit excluded_covers=0
+
+Witness checker control
+The 13-edge hypergraph in Equation (7) of arXiv:1409.4833v2 has a five-cover and no four-cover by bitset recursion and separate exhaustive four-subset enumeration.
+Duplicate rows, a disjoint pair, and noninteger labels all triggered validation errors.

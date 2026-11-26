@@ -1,0 +1,246 @@
+\documentclass[10pt]{article}
+\usepackage[cmex10]{amsmath}
+\usepackage{amsthm}
+\DeclareFontShape{OMX}{cmex}{m}{n}{<->cmex10}{}
+\DeclareMathSizes{10}{10}{7}{7}
+\DeclareMathSizes{9}{10}{7}{7}
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\evensidemargin}{0.25in}
+\setlength{\textheight}{8.65in}
+\setlength{\topmargin}{-0.45in}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\title{A 23-edge lower bound for rank-six intersecting Ryser counterexamples}
+\author{\vspace{-1.5\baselineskip}}
+\date{November 26, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Every six-partite, six-uniform intersecting hypergraph with cover number six
+has at least 23 edges. This raises the reported 22-edge lower bound by one.
+Deleting two vertex stars leaves at least nine edges, and deleting one leaves
+at least 14. Integer enumeration reduces the 22-edge case to five degree
+systems. A restriction on degree-three vertices and a congruence on each
+side exclude all five.
+\end{abstract}
+
+\begin{theorem}
+If $H$ is a finite, simple, intersecting six-partite, six-uniform hypergraph
+with covering number $\tau(H)=6$, then $|E(H)|\geq23$.
+\end{theorem}
+
+\section{Deleting stars}
+
+Let $m=|E(H)|$ and write $E(v)$ for the edges through $v$. Ignore isolated
+vertices throughout. Each part is a cover and has at least six vertices.
+No edge has a degree-one vertex, since removing that vertex from the edge
+would leave a five-vertex cover. More generally, for distinct vertices
+$u,v$ one cannot have $E(u)\subseteq E(v)$. Any edge through $u$ would
+contain $v$ and could omit $u$ from its cover.
+
+Deleting all edges through a set of $k$ vertices leaves an intersecting
+hypergraph of cover number at least $6-k$. Its edges can be covered in
+pairs, choosing one shared vertex for each pair. Hence deleting three,
+four, or five stars leaves at least five, three, or one edges, respectively.
+
+\begin{lemma}
+Deleting any two distinct stars leaves at least nine edges.
+\end{lemma}
+
+\begin{proof}
+Write $J$ for the residual hypergraph, with $\tau(J)\geq4$.
+The pair cover shows $|E(J)|\geq7$. At seven edges a vertex of degree at
+least three would leave at most four other edges and give a three-vertex
+cover. If every degree is at most two, each edge needs all six of its
+vertices to have degree two so it can meet its six peers. This would
+partition the seven edges into pairs on every side, which is impossible.
+
+At eight edges, $\tau(J)=4$, and Lemma~2.1 of Abu-Khazneh and Pokrovskiy
+\cite{akp} gives a degree-three vertex on every side and a pair of edges
+sharing two degree-three vertices. If the two selected stars are in one
+side of $H$, that side retains at least four disjoint blocks, each of
+unchanged degree at least two. With exactly eight edges these four blocks
+all have degree two, which contradicts the lemma.
+
+If the stars are on different sides, each of their two sides retains at
+least five vertices. Indeed the other vertices on either side are
+disjoint from the deleted star in that side and their stars cannot be
+contained in the other deleted star. In $J$, the largest degree is at most
+three, since a degree-four vertex and two pair covers would give a
+three-vertex cover. Two degree-three vertices on one side would also give
+such a cover. Thus each side contributes at most five pair intersections,
+and a side with at least five vertices contributes at most four. The total
+is at most $2\cdot4+4\cdot5=28$. Since the 28 edge pairs must intersect
+and one pair intersects twice, this is impossible.
+\end{proof}
+
+\begin{lemma}
+Deleting any one star leaves at least 14 edges.
+\end{lemma}
+
+\begin{proof}
+Denote the residual by $J$. Its cover number is at least five, so it has
+at least 13 edges by Aharoni, Bar\'at, and Wanless \cite[Theorem~2.7]{abw}.
+Suppose it has exactly 13.
+Every vertex outside the side of the deleted star survives, by the
+noncontainment of stars. In the affected side, at least five vertices
+survive. The other five sides each have at least six. No edge of $J$
+has two degree-one vertices, since removing both would give a cover
+of size four. Hence at most 13 vertices of $J$ have degree one.
+
+In each side, the sums of the largest $k$ degrees are bounded by
+$4,8,10,12$ for $k=1,2,3,4$. Deleting a further $k$ stars in that
+side is equivalent to deleting $k+1$ original stars. Apply the first
+lemma for $k=1$ and the pair cover bounds for $k=2,3,4$.
+The integer partitions of 13 into at least five positive degrees
+that meet these prefix bounds give 35 side profiles. Enumerating
+six-profile multisets with at most one side of size five and at most
+13 degree-one vertices gives zero systems whose pair score
+$\sum_v\binom{d(v)}2$ is at least $\binom{13}2=78$.
+The supplied verifier checks this finite enumeration.
+\end{proof}
+
+\section{Pair intersections at 22 edges}
+
+Let $p_i$ be the nonincreasing degree profile of side $i$ of $H$.
+Its entries are at least two, its length is at least six, and the sums of
+its first one through five entries are at most
+\[
+m-14,\quad m-9,\quad m-5,\quad m-3,\quad m-1.
+\]
+Write $s(p)=\sum_{a\in p}\binom a2$. Every two edges meet, so
+$R=\sum_i s(p_i)-\binom m2$ is nonnegative.
+
+Every edge contains at most one degree-two vertex. If an edge contained
+two, dropping both from its cover would uncover at most their two
+other incident edges. Intersectingness covers these with one vertex.
+Thus the sum of the numbers of degree-two entries of the six profiles
+is at most $\lfloor m/2\rfloor$.
+
+An edge pair cannot agree in five sides. An edge avoiding the five
+common vertices would have to meet the pair in two distinct vertices
+from the same side. Consequently the five common vertices would
+already form a cover.
+Let $n_k$ count pairs meeting in exactly $k$ sides, for $1\leq k\leq4$.
+For distinct sides $i,j$, let $T_{ij}$ count edge pairs agreeing in both
+sides, and put $T=\sum_{i<j}T_{ij}$. Then
+\[
+ R=n_2+2n_3+3n_4,\qquad T=n_2+3n_3+6n_4,\qquad 2R-T=n_2+n_3.
+\]
+
+For profiles $a,b$ of two sides, let $c_{uv}$ be the number of
+edges through the vertices of degrees $a_u,b_v$. Its matrix has
+row sums $a$ and column sums $b$. The two-star lemma and
+noncontainment give
+\[
+ \max(0,a_u+b_v-(m-9))\ \leq c_{uv}\ \leq\min(a_u,b_v)-1 .
+\]
+Minimize $\sum_v\binom{c_{uv}}2$ for each row under these bounds and
+its row sum. The sum of the minima bounds $T_{ij}$ from below.
+Repeat with columns and take the larger bound $L_{ij}$. This uses
+only one-dimensional integer enumeration. A profile system can
+survive only if $\sum_{i<j}L_{ij}\leq2R$.
+
+The verifier enumerates all side profiles for each $m$ from 13
+through 22 and all six-profile multisets subject to these conditions.
+The lower endpoint follows from $\tau(H)\geq5$ and \cite{abw}.
+No system survives for $m\leq21$. At $m=22$ there are 64 individual
+profiles and five surviving systems. All five have exactly eleven
+degree-two vertices, so every edge contains one.
+
+In this case a degree-three vertex cannot be used in a multiple
+intersection. For suppose $e$ meets another edge at its degree-three
+vertex $v$ and at a second vertex. Drop $v$ and the degree-two vertex
+of $e$ from the cover $e$. The edge sharing two vertices either
+stays covered or contains both deleted vertices. In either case
+at most two edges remain uncovered. One more vertex covers them.
+The contradiction implies $c_{uv}\leq1$ whenever either degree is three.
+Recomputing the row and column bounds eliminates two systems.
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$R$ & $\sum L_{ij}$ & $2R-\sum L_{ij}$ & One side lower bound\\
+\hline
+20 & 40 & 0 & 10\\
+18 & 35 & 1 & 13\\
+15 & 30 & 0 & 8
+\end{tabular}
+\end{center}
+
+If $2R-\sum L_{ij}=0$, then $n_2+n_3=0$. This excludes $R=20$,
+which is not divisible by three. If $2R-\sum L_{ij}=1$ and $R$ is
+divisible by three, one again has $n_2=n_3=0$. Indeed the only
+other possibilities give remainder one or two in $R$.
+When all multiple intersections have size four, each side has
+$\sum_{j\ne i}T_{ij}$ divisible by three. Each size-four
+intersection using that side contributes three to this sum.
+For $R=18$ the indicated side sum lies between 13 and 14.
+For $R=15$ it equals eight. This proves the theorem.
+
+\section{An affine-plane construction that cannot give a witness}
+
+\begin{corollary}
+Start with the affine plane of order five and retain any subset of its
+points. In each of the six parallel directions, merge any collection of
+whole line traces into blocks and partition the remaining individual
+line traces into blocks. Use each retained point as an edge, with its
+six block memberships giving its vertices. If the resulting hypergraph
+is intersecting, its cover number is at most five.
+\end{corollary}
+
+\begin{proof}
+If it has cover number six, at most two points were deleted by the
+theorem. All five traces in each direction are nonempty.
+No block can merge three lines because its deletion would leave at
+most ten edges. Two merged blocks in one direction leave at most five
+edges outside them, which can be covered by three more vertices.
+Thus each direction has at most one merged block of two line traces.
+
+Every block has size at least two. Splitting an intact five-point
+line would therefore split it into sizes two and three. The six cross
+pairs on that line would have to meet in other directions. Each other
+direction can repair at most one such pair through its lone merged
+block, since each of its two merged lines meets the split line once.
+There are only five other directions. Thus neither five-point traces
+nor three-point traces can split. A four-point trace can only split
+into two pairs.
+
+If no points were deleted, every direction has at most five blocks.
+If two points were deleted, the direction of their joining line has
+one three-point trace and four five-point traces, again giving at most
+five blocks. If one point was deleted, each direction has one
+four-point trace and needs to split it without merging to obtain six
+blocks. With no merges in any direction, none of these splits can
+preserve intersection. These cases exhaust the possibilities.
+\end{proof}
+
+\section{Verification}
+
+The independent replay generates degree profiles using combinations
+with replacement, and obtains row bounds by explicitly enumerating
+bounded integer tuples. A second program generates partitions
+recursively and uses convex marginal costs for row bounds, with a
+min-cost-flow cross-check on the surviving profile systems.
+Both give five systems before the degree-three cut, three before
+the congruence, and zero after it. The 13-edge residual and the
+intersection checks use integer arithmetic. The earlier 22-edge
+lower bound appears in \cite{hrk}.
+
+\begin{thebibliography}{9}
+\bibitem{abw}
+R. Aharoni, J. Bar\'at, and I. M. Wanless.
+\emph{Multipartite hypergraphs achieving equality in Ryser's conjecture}.
+arXiv:1409.4833v2, 2015.
+\bibitem{akp}
+A. Abu-Khazneh and A. Pokrovskiy.
+\emph{Intersecting extremal constructions in Ryser's conjecture
+for $r$-partite hypergraphs}. arXiv:1409.4938, 2014.
+\bibitem{hrk}
+HRK44. \emph{The 22-edge lower bound for rank-six counterexamples
+to Ryser's conjecture}. GitHub repository \texttt{HRK44/ryser-conjecture-22}, 2026.
+\end{thebibliography}
+\end{document}
